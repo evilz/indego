@@ -1,0 +1,44 @@
+@page "/map"
+@inherits BasePage;
+@inject IIndegoService indegoService
+
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
+<PageTitle>Index</PageTitle>
+
+
+<MudContainer Fixed="true">
+    <MudGrid>
+        <MudItem xs="12">
+            @if (map.Value == null)
+            {
+                <div class="d-flex align-content-center justify-center flex-wrap flex-grow-1 gap-4 pa-16 ">
+                    <MudProgressCircular Color="Color.Primary" Style="height:170px;width:170px;" Indeterminate="true" />
+                </div>
+            }
+            else
+            {
+                @map
+            }
+
+        </MudItem>
+
+    </MudGrid>
+</MudContainer>
+
+@code {
+    MarkupString map;
+    protected override async Task OnInitializedAsync()
+    {
+        GlobalState.PageTitle = "Carte";
+        GlobalState.CanGoBack = true;
+
+        var raw = await indegoService.GetMapAsync();
+
+        map = new MarkupString(raw);
+
+
+
+    }
+
+
+}

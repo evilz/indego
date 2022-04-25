@@ -1,0 +1,43 @@
+﻿@page "/alerts"
+@inherits BasePage;
+<PageTitle>Index</PageTitle>
+
+@foreach (var alert in alerts)
+{
+
+    <MudPaper Class="pa-4 ma-2">
+
+        <MudGrid Spacing="2" Justify="Justify.Center">
+            <MudItem xs="12">
+                <MudText Align="@Align.Right" Style="font-weight:bold">@alert.date</MudText>
+            </MudItem>
+            <MudItem xs="1">
+                <MudIcon Icon="@Icons.Outlined.WarningAmber" Title="alert" Color="Color.Warning" />
+            </MudItem>
+            <MudItem xs="11">
+                <MudText Align="@Align.Left" Style="font-weight:bold">@alert.headline</MudText>
+                <MudText Align="@Align.Left" Style="font-weight:bold">@alert.message</MudText>
+            </MudItem>
+
+        </MudGrid>
+
+    </MudPaper>
+}
+
+
+@code {
+
+    private List<Indego.Client.Alert> alerts = new List<Indego.Client.Alert>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        GlobalState.CanGoBack = true;
+        GlobalState.PageTitle = base.I18nStrings.alerts;
+
+        var a = await IndegoService.GetAlertsAsync();
+        alerts.AddRange(a);
+    }
+
+
+}

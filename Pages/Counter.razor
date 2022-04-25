@@ -1,0 +1,38 @@
+﻿@page "/counter"
+@using Microsoft.AspNetCore.Authorization
+@attribute [Authorize]
+
+<PageTitle>Counter</PageTitle>
+
+<MudText Typo="Typo.h3">Counter</MudText>
+
+<br />
+<MudGrid Spacing="1" Justify="Justify.FlexStart">
+
+    <MudItem xs="12">
+        <MudBadge Content="@currentCount">
+            <MudText>Current count</MudText>
+        </MudBadge>
+    </MudItem>
+    <MudItem xs="12">
+
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" @onclick="IncrementCount">Click me</MudButton>
+    </MudItem>
+</MudGrid>
+
+
+
+@code {
+    private int currentCount = 0;
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    public int CurrentCount
+    {
+        get { return currentCount; }
+        set { currentCount = value; }
+    }
+}

@@ -1,0 +1,92 @@
+﻿@inherits LayoutComponentBase
+@inject GlobalState globalState
+<MudThemeProvider Theme="MyCustomTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<CascadingValue Value="@PageName" Name="PageName">
+    <MudLayout>
+        <MudAppBar Elevation="0">
+
+
+            @if (globalState.CanGoBack)
+            {
+                <MudIconButton Icon="@Icons.Filled.ArrowBack" Color="Color.Inherit" Edge="Edge.Start" Href="/" />
+            }
+            else
+            {
+                <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+                OnClick="@((e) => DrawerToggle())" />
+            }
+
+            <b>@globalState.PageTitle</b>
+            <MudSpacer />
+        </MudAppBar>
+
+
+
+        <MudDrawer @bind-Open="_drawerOpen" Elevation="2">
+            <MudDrawerHeader>
+                <MudText Typo="Typo.h5" Class="mt-1">
+                    <MudImage Fluid="true" Src="images/indego_m.png" Alt="indego" />
+                </MudText>
+            </MudDrawerHeader>
+            <NavMenu />
+        </MudDrawer>
+
+        <MudMainContent>
+            <div class="d-flex justify-center">
+                <MudImage ObjectFit="ObjectFit.Fill" Src="images/toolbar_crop.png" Height=10
+                    class="d-flex flex-grow-1" />
+            </div>
+
+            @Body
+
+        </MudMainContent>
+    </MudLayout>
+</CascadingValue>
+
+@code {
+    string PageName = "Indego";
+    MudTheme MyCustomTheme = new MudTheme()
+    {
+        Palette = new Palette()
+        {
+            Primary = new MudColor("006634"),
+            Secondary = Colors.Green.Accent4,
+            AppbarBackground = Colors.Shades.White,
+            AppbarText = Colors.Shades.Black,
+
+        },
+        PaletteDark = new Palette()
+        {
+            Primary = new MudColor("006634"),
+
+        },
+
+        LayoutProperties = new LayoutProperties()
+        {
+            DrawerWidthLeft = "260px",
+            DrawerWidthRight = "300px"
+
+        }
+    };
+
+    bool _drawerOpen = true;
+
+
+    protected override void OnInitialized()
+    {
+        globalState.OnChange += StateHasChanged;
+    }
+    public void Dispose()
+    {
+        globalState.OnChange -= StateHasChanged;
+    }
+
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

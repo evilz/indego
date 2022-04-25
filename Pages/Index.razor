@@ -1,0 +1,80 @@
+﻿@page "/"
+@inherits BasePage;
+@inject IIndegoService _indegoService
+
+
+@inject Toolbelt.Blazor.I18nText.I18nText I18nText
+<PageTitle>Index</PageTitle>
+
+
+
+<MudPaper Class="pa-16" Square="true">
+
+    @state
+
+
+</MudPaper>
+<MudContainer Fixed="true">
+    <MudGrid>
+        <MudItem xs="12">
+
+        </MudItem>
+        <MudItem xs="4">
+            <MudIconButton Icon="@Icons.Outlined.Android" Variant="Variant.Filled" Color="Color.Primary"
+                Class="d-flex align-center justify-center mud-width-full py-8" style="font-size: 5rem;"
+                Size="Size.Large" />
+
+        </MudItem>
+        <MudItem xs="4">
+            <MudIconButton Icon="@Icons.Outlined.CalendarMonth" Variant="Variant.Filled" Color="Color.Primary"
+                Class="d-flex align-center justify-center mud-width-full py-8" Size="Size.Large" />
+        </MudItem>
+        <MudItem xs="4">
+            <MudIconButton Icon="@Icons.Outlined.Notifications" Variant="Variant.Filled" Color="Color.Primary"
+                Class="d-flex align-center justify-center mud-width-full py-8" Size="Size.Large" Href="/alerts" />
+        </MudItem>
+
+        <MudItem xs="4">
+            <MudIconButton Icon="@Icons.Outlined.Map" Variant="Variant.Filled" Color="Color.Primary"
+                Class="d-flex align-center justify-center mud-width-full py-8" Size="Size.Large" Href="/map" />
+        </MudItem>
+
+        <MudItem xs="4">
+            <MudIconButton Icon="@Icons.Outlined.Settings" Variant="Variant.Filled" Color="Color.Primary"
+                Class="d-flex align-center justify-center mud-width-full py-8" Size="Size.Large" Href="/map" />
+
+        </MudItem>
+
+        <MudItem xs="4">
+            <MudIconButton Icon="@Icons.Outlined.Cloud" Variant="Variant.Filled" Color="Color.Primary"
+                Class="d-flex align-center justify-center mud-width-full py-8" Size="Size.Large" Href="/map" />
+
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+
+@code {
+    private string state = "unknown";
+    private int battery;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        GlobalState.CanGoBack = false;
+        GlobalState.PageTitle = "Indego";
+
+        await GetState();
+
+    }
+
+
+    private async Task GetState()
+    {
+        var s = await _indegoService.GetStatusAsync();
+        state = s.State.AsString(I18nStrings);
+
+
+    }
+
+}
